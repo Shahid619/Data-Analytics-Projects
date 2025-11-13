@@ -1,0 +1,18 @@
+trade_id,date,pair,direction,entry_price,sl_price,tp_price,risk_percent,result,rr_ratio,flow_1d,liq_sweep_4h,fractal_break_4h,pd_zone_4h,fractal_1d_alignment,score,compromised_criteria,quality_label,comments,P&L
+T001,11/1/2025,EUR/USD,Short,1.075,1.078,1.07,1,Win,2.5,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Nice entry at NY session,2.5
+T002,11/1/2025,GBP/USD,Long,1.32,1.317,1.33,0.8,Loss,-0.8,TRUE,FALSE,TRUE,TRUE,TRUE,80,4H Liquidity Sweep,High Quality,Missed sweep confirmation,-0.64
+T003,11/2/2025,USD/JPY,Short,148.5,149,147.5,1.2,Win,1.8,TRUE,TRUE,TRUE,TRUE,FALSE,80,4H Fractal Same in 1D Flow,High Quality,Fractal not aligned,2.16
+T004,11/2/2025,EUR/USD,Long,1.077,1.074,1.085,1,Win,3,TRUE,TRUE,TRUE,FALSE,TRUE,80,4H Premium/Discount Rejection,High Quality,Rejected slightly late,3
+T005,11/3/2025,GBP/USD,Short,1.318,1.321,1.31,0.9,Loss,-0.9,FALSE,TRUE,TRUE,TRUE,TRUE,80,1D Flow Aligned,High Quality,Entered against trend,-0.81
+T006,11/3/2025,USD/JPY,Long,149.2,148.7,150.5,1,Win,2.8,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Smooth setup,2.8
+T007,11/4/2025,EUR/USD,Short,1.0735,1.076,1.068,1.1,Win,2.2,TRUE,TRUE,TRUE,TRUE,FALSE,80,4H Fractal Same in 1D Flow,High Quality,Fractal slightly off,2.42
+T008,11/4/2025,GBP/USD,Long,1.322,1.319,1.332,1,Loss,-1,TRUE,FALSE,FALSE,TRUE,TRUE,60,"4H Liquidity Sweep, 4H Fractal Break",Average Setup,Missed multiple criteria,-1
+T009,11/5/2025,EUR/USD,Long,1.0785,1.075,1.085,1.2,Win,2.7,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Good alignment,3.24
+T010,11/5/2025,USD/JPY,Short,148.8,149.2,147.9,1,Loss,-1,TRUE,TRUE,FALSE,TRUE,TRUE,80,4H Fractal Break,High Quality,Fractal failed,-1
+T011,11/6/2025,EUR/USD,Long,1.079,1.0755,1.086,0.8,Win,2.5,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Clean trade,2
+T012,11/6/2025,GBP/USD,Short,1.3205,1.323,1.312,1,Loss,-1,FALSE,TRUE,TRUE,TRUE,TRUE,80,1D Flow Aligned,High Quality,Entered against trend,-1
+T013,11/7/2025,USD/JPY,Long,149.5,149,150.8,1.1,Win,2.9,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Strong trend,3.19
+T014,11/7/2025,EUR/USD,Short,1.074,1.077,1.0685,1,Win,2.4,TRUE,TRUE,TRUE,TRUE,TRUE,100,None,Perfect Trade,Smooth entry,2.4
+T015,11/8/2025,GBP/USD,Long,1.321,1.318,1.331,0.9,Loss,-1,TRUE,FALSE,TRUE,TRUE,FALSE,60,"4H Liquidity Sweep, 4H Fractal Same in 1D Flow",Average Setup,Missed multiple,-0.9
+T016,2025-11-13,usdcad,Long,1.3339,1.32,1.3497,0.8,Breakeven,0.0,True,True,True,False,True,80,4H Premium/Discount Rejection,High Quality,abc
+T017,2025-11-13,usdcad,Long,1.3356,1.32,1.5,0.9,Breakeven,0.0,True,True,True,False,True,80,4H Premium/Discount Rejection,High Quality,DXY was very  bearish that's why closed
