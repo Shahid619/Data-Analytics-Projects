@@ -11,7 +11,8 @@ scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
 client = gspread.authorize(creds)
-sheet = client.open_by_key("YOUR_SHEET_ID").sheet1
+sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
+
 st.set_page_config(page_title="Trade Journal Entry", layout="centered")
 
 st.title("🧾 Trade Journal Entry Form")
@@ -80,5 +81,6 @@ with st.form("trade_entry"):
 
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
+
 
 
