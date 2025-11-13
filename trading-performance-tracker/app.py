@@ -3,16 +3,12 @@ import streamlit as st
 import pandas as pd
 from scoring import calculate_score # type: ignore
 from storage import get_next_trade_id, save_trade
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
 
 # --- Google Sheets setup ---
 scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
-
-creds_dict = st.secrets["google_credentials"]
-creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
 client = gspread.authorize(creds)
 sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
 
