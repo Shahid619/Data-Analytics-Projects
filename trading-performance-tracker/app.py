@@ -1,8 +1,8 @@
 # app.py
 import streamlit as st
 import pandas as pd
-from Utils.scoring import calculate_score # type: ignore
-from Utils.storage import get_next_trade_id, save_trade
+from scoring import calculate_score # type: ignore
+from storage import get_next_trade_id, save_trade
 
 st.set_page_config(page_title="Trade Journal Entry", layout="centered")
 
@@ -72,3 +72,4 @@ with st.form("trade_entry"):
 
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
+
