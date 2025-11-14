@@ -1,25 +1,62 @@
-import pandas as pd
-import os
+# storage.py
 
-def get_next_trade_id(filepath="data/trades.csv"):
-    """Generate next trade ID (T001, T002, ...) with safe fallback."""
-    if not os.path.exists(filepath) or os.path.getsize(filepath) == 0:
-        return "T001"
-    try:
-        df = pd.read_csv(filepath)
-        if df.empty or "trade_id" not in df.columns:
-            return "T001"
-        last_id = df["trade_id"].iloc[-1]
-        next_num = int(last_id.replace("T", "")) + 1
-        return f"T{next_num:03d}"
-    except Exception:
-        return "T001"
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
 
-def save_trade(data, filepath="data/trades.csv"):
-    """Append a new trade to the CSV."""
-    df = pd.DataFrame([data])
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    if os.path.exists(filepath):
-        df.to_csv(filepath, mode="a", header=False, index=False)
-    else:
-        df.to_csv(filepath, index=False)
+# --- Google Sheets setup ---
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+service_account_info = st.secrets["gcp_service_account"]
+creds_dict = dict(service_account_info)
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+
+sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
+
+
+# --------------------------
+# Get the next trade ID
+# --------------------------
+def get_next_trade_id():
+    data = sheet.get_all_records()
+
+    if not data:
+        return 1  # First trade
+
+    last_trade = data[-1]["trade_id"]
+    return int(last_trade) + 1
+
+
+# --------------------------
+# Save a trade entry
+# --------------------------
+def save_trade(trade_data):
+
+    # FIXED: Ensure correct column order
+    row = [
+        trade_data.get("trade_id"),
+        str(trade_data.get("date")),
+        trade_data.get("pair"),
+        trade_data.get("direction"),
+        trade_data.get("entry_price"),
+        trade_data.get("sl_price"),
+        trade_data.get("tp_price"),
+        trade_data.get("risk_percent"),
+        trade_data.get("result"),
+        trade_data.get("rr_ratio"),
+        trade_data.get("trade_link"),  # NEW FIELD
+        trade_data.get("flow_1d"),
+        trade_data.get("liq_sweep_4h"),
+        trade_data.get("fractal_break_4h"),
+        trade_data.get("pd_zone_4h"),
+        trade_data.get("fractal_1d_alignment"),
+        trade_data.get("score"),
+        ", ".join(trade_data.get("compromised_criteria", [])),
+        trade_data.get("quality_label"),
+        trade_data.get("comments"),
+    ]
+
+    # Append to Google Sheet
+    sheet.append_row(row, value_input_option="RAW")
