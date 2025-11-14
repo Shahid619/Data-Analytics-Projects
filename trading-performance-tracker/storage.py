@@ -58,3 +58,4 @@ def save_trade(trade_data):
     sheet.append_row(row, value_input_option="RAW")
 
 
+
