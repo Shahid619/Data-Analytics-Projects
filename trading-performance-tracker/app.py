@@ -1,7 +1,7 @@
 # app.py
 import streamlit as st
 import pandas as pd
-from scoring import calculate_score # type: ignore
+from scoring import calculate_score  # type: ignore
 from storage import get_next_trade_id, save_trade
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -13,17 +13,23 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 # Load from Streamlit secrets
 service_account_info = st.secrets["gcp_service_account"]
 
-# Convert TOML → dict → JSON string
+# Convert TOML → dict
 creds_dict = dict(service_account_info)
+
+# Create credentials
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+
+# Authorize
 client = gspread.authorize(creds)
+
+# Open your sheet
 sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
 
 st.set_page_config(page_title="Trade Journal Entry", layout="centered")
 
 st.title("🧾 Trade Journal Entry Form")
 
-# Basic info
+# -------------------- FORM --------------------
 with st.form("trade_entry"):
     st.subheader("Trade Details")
 
@@ -36,7 +42,9 @@ with st.form("trade_entry"):
     risk = st.number_input("Risk (%)", step=0.1, min_value=0.1, max_value=10.0)
     result = st.selectbox("Trade Result", ["Open", "Win", "Loss", "Breakeven"])
     rr = st.number_input("Reward:Risk Ratio (optional)", step=0.1, format="%.2f")
-    
+
+    # NEW: TradingView link (optional)
+    trade_link = st.text_input("TradingView Trade Link (optional)", placeholder="https://www.tradingview.com/...")
 
     st.subheader("Entry Criteria Checklist")
     flow_1d = st.checkbox("1D Flow Aligned")
@@ -72,6 +80,7 @@ with st.form("trade_entry"):
             "risk_percent": risk,
             "result": result,
             "rr_ratio": rr,
+            "trade_link": trade_link,   # << NEW FIELD
             "flow_1d": flow_1d,
             "liq_sweep_4h": liq_sweep_4h,
             "fractal_break_4h": fractal_break_4h,
@@ -87,9 +96,3 @@ with st.form("trade_entry"):
 
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
-
-
-
-
-
-
