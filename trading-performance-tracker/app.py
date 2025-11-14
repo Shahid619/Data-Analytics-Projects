@@ -11,7 +11,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 # Load from Streamlit secrets
-service_account_info = st.secrets["gcp_service_account"]
+service_account_info = st.secrets["gcp"]
 
 # Convert TOML → dict
 creds_dict = dict(service_account_info)
@@ -96,3 +96,4 @@ with st.form("trade_entry"):
 
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
+
