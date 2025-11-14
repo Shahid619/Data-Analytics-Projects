@@ -1,27 +1,19 @@
 # storage.py
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import streamlit as st
 
 # --- Google Sheets setup ---
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-
-service_account_info = st.secrets["gcp"]
-creds_dict = dict(service_account_info)
-
-# Fix key formatting (if needed)
-creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n").strip()
-
-# Authorize
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-client = gspread.authorize(creds)
-
+service_account_info = st.secrets["gcp"]  # No need to convert to dict—it's already one
+scopes = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+client = gspread.service_account_from_dict(service_account_info, scopes=scopes)
 # Open your sheet
 sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
+# No replace/strip needed—the multiline TOML handles formatting
 
-# --------------------------
-# Get the next trade ID
-# --------------------------
+# -------------------------- (rest of your code remains unchanged)
 def get_next_trade_id():
     data = sheet.get_all_records()
     if not data:
@@ -29,9 +21,6 @@ def get_next_trade_id():
     last_trade = data[-1]["trade_id"]
     return int(last_trade) + 1
 
-# --------------------------
-# Save a trade entry
-# --------------------------
 def save_trade(trade_data):
     row = [
         trade_data.get("trade_id"),
