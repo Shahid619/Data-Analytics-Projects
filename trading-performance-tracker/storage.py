@@ -7,7 +7,7 @@ import streamlit as st
 # --- Google Sheets setup ---
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-service_account_info = st.secrets["gcp_service_account"]
+service_account_info = st.secrets["gcp"]
 creds_dict = dict(service_account_info)
 
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
@@ -60,3 +60,4 @@ def save_trade(trade_data):
 
     # Append to Google Sheet
     sheet.append_row(row, value_input_option="RAW")
+
