@@ -3,11 +3,11 @@ import streamlit as st
 import pandas as pd
 from scoring import calculate_score # type: ignore
 from storage import get_next_trade_id, save_trade
+import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 # --- Google Sheets setup ---
-scope = ["https://spreadsheets.google.com/feeds",
-         "https://www.googleapis.com/auth/drive"]
+
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 # Load from Streamlit secrets
@@ -87,6 +87,7 @@ with st.form("trade_entry"):
 
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
+
 
 
 
