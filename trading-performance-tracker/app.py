@@ -1,38 +1,15 @@
 # app.py
 import streamlit as st
 import pandas as pd
-from scoring import calculate_score  # type: ignore
+from scoring import calculate_score  # your scoring logic
 from storage import get_next_trade_id, save_trade
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-
-# --- Google Sheets setup ---
-
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-
-# Load from Streamlit secrets
-service_account_info = st.secrets["gcp"]
-
-# Convert TOML → dict
-creds_dict = dict(service_account_info)
-
-# Create credentials
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-
-# Authorize
-client = gspread.authorize(creds)
-
-# Open your sheet
-sheet = client.open_by_key("1_ONSYjb4pjVRMAjCIXAEAkvrU4qHGFkY_nbIIf3MnKw").sheet1
 
 st.set_page_config(page_title="Trade Journal Entry", layout="centered")
-
 st.title("🧾 Trade Journal Entry Form")
 
 # -------------------- FORM --------------------
 with st.form("trade_entry"):
     st.subheader("Trade Details")
-
     date = st.date_input("Date")
     pair = st.text_input("Pair (e.g., EUR/USD)")
     direction = st.selectbox("Direction", ["Long", "Short"])
@@ -42,8 +19,6 @@ with st.form("trade_entry"):
     risk = st.number_input("Risk (%)", step=0.1, min_value=0.1, max_value=10.0)
     result = st.selectbox("Trade Result", ["Open", "Win", "Loss", "Breakeven"])
     rr = st.number_input("Reward:Risk Ratio (optional)", step=0.1, format="%.2f")
-
-    # NEW: TradingView link (optional)
     trade_link = st.text_input("TradingView Trade Link (optional)", placeholder="https://www.tradingview.com/...")
 
     st.subheader("Entry Criteria Checklist")
@@ -54,7 +29,6 @@ with st.form("trade_entry"):
     fractal_1d_alignment = st.checkbox("4H Fractal Same in 1D Flow")
 
     comments = st.text_area("Comments / Observations")
-
     submitted = st.form_submit_button("💾 Submit Trade")
 
     if submitted:
@@ -80,7 +54,7 @@ with st.form("trade_entry"):
             "risk_percent": risk,
             "result": result,
             "rr_ratio": rr,
-            "trade_link": trade_link,   # << NEW FIELD
+            "trade_link": trade_link,
             "flow_1d": flow_1d,
             "liq_sweep_4h": liq_sweep_4h,
             "fractal_break_4h": fractal_break_4h,
@@ -93,7 +67,8 @@ with st.form("trade_entry"):
         }
 
         save_trade(trade_data)
-
         st.success(f"✅ Trade {trade_id} saved successfully! (Score: {score} - {quality})")
         st.write("**Compromised Conditions:**", compromised)
+
+
 
